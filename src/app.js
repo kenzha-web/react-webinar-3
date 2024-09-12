@@ -1,5 +1,5 @@
 import React from 'react';
-import { createElement } from './utils.js';
+import {createElement, getCorrectCount} from './utils.js';
 import './styles.css';
 
 /**
@@ -21,6 +21,7 @@ function App({ store }) {
       <div className="App-center">
         <div className="List">
           {list.map(item => (
+            item.code && (
             <div key={item.code} className="List-item">
               <div
                 className={'Item' + (item.selected ? ' Item_selected' : '')}
@@ -28,13 +29,14 @@ function App({ store }) {
               >
                 <div className="Item-code">{item.code}</div>
                 <div className="Item-title">
-                  {`${item.title}${item.selectCount > 0 ? ` | Выделяли ${item.selectCount} раз` : ''}`}
+                  {`${item.title}${item.selectCount > 0 ? ` | Выделяли ${getCorrectCount(item.selectCount)}` : ''}`}
                 </div>
                 <div className="Item-actions">
                   <button onClick={() => store.deleteItem(item.code)}>Удалить</button>
                 </div>
               </div>
             </div>
+            )
           ))}
         </div>
       </div>

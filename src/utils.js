@@ -7,6 +7,17 @@ const propNames = new Set(['id', 'className', 'textContent', 'onclick']);
  * @param children {...Node} Вложенные элементы
  * @returns {HTMLElement}
  */
+
+export function getCorrectCount(count) {
+  const lastDigit = count % 10;
+  const lastTwoDigits = count % 100;
+
+  if (lastDigit === 1 && lastTwoDigits !== 11) return `${count} раз`;
+  if (lastDigit >= 2 && lastDigit <= 4 && (lastTwoDigits < 10 || lastTwoDigits > 20)) return `${count} раза`;
+
+  return `${count} раз`;
+}
+
 export function createElement(name, props = {}, ...children) {
   const element = document.createElement(name);
 
