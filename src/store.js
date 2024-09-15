@@ -3,11 +3,21 @@
  */
 class Store {
   constructor(initState = {}) {
-    this.state = initState;
+    this.state = this.validateAndInitializeState(initState);
     this.listeners = []; // Слушатели изменений состояния
-    // this.nextEntryCode = Math.max(0, ...this.state.list.map(item => item.code)) + 1;
     this.uniqueCodes = new Set(this.state.list.map(item => item.code));
-    this.lastCode = this.uniqueCodes.size > 0 ? Math.max(...this.uniqueCodes) : 0;
+    this.generateCode = this.generator(this.uniqueCodes);
+  }
+
+  validateAndInitializeState(state) {
+    const codes = state.list.map(item => item.code);
+    const uniqueCodes = new Set(codes);
+
+    if (codes.length !== uniqueCodes.size) {
+      throw new Error("Некоторые коды повторяются в начальном состоянии");
+    }
+
+    return state;
   }
 
   /**
@@ -41,14 +51,14 @@ class Store {
     for (const listener of this.listeners) listener();
   }
 
-  generateCode() {
-    let newCode = this.lastCode + 1;
-    while (this.uniqueCodes.has(newCode)) {
-      newCode++;
-    }
-    this.uniqueCodes.add(newCode);
-    this.lastCode = newCode;
-    return newCode;
+  generator(start) {
+    let lastCode = start.size > 0 ? Math.max(...start) : 0;
+
+    return function() {
+      let newCode = ++lastCode;
+      start.add(newCode);
+      return newCode;
+    };
   }
 
   /**
@@ -61,7 +71,6 @@ class Store {
       ...this.state,
       list: [...this.state.list, { code: newCode, title: 'Новая запись', selected: false, selectCount: 0 }],
     });
-    this.nextEntryCode += 1;
   }
 
   /**
