@@ -1,21 +1,60 @@
-import React from 'react';
+import React, {useState, useCallback, useEffect} from 'react';
 import PropTypes from 'prop-types';
+import BasketModal from "../basket-modal";
 import './style.css';
 
-function Controls({ onAdd }) {
+function Controls(props) {
+  const { store } = props;
+  const [isBasketModal, setIsBasketModal] = useState(false);
+  const [totalItems, setTotalItems] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  const onCloseModal = useCallback(() => {
+    setIsBasketModal(false);
+  }, []);
+
+  const onShowModal = useCallback(() => {
+    setIsBasketModal(true);
+  }, []);
+
+  useEffect(() => {
+    const updateBasketInfo = () => {
+      const basket = store.getState().basket;
+
+      const uniqueItems = basket.length;
+      const totalPrice = basket.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+      setTotalItems(uniqueItems);
+      setTotalPrice(totalPrice);
+    };
+
+    const unsubscribe = store.subscribe(updateBasketInfo);
+    updateBasketInfo();
+
+    return () => unsubscribe();
+  }, [store]);
+
   return (
     <div className="Controls">
-      <button onClick={() => onAdd()}>Добавить</button>
+      <div className="Controls-info">
+        <div className="Controls-info-title">
+          В корзине:
+        </div>
+        <div className="Controls-info-actions">{totalItems === 0 ? `пусто` : `${totalItems} товара / ${totalPrice} ₽`}</div>
+      </div>
+      <div className="Controls-action">
+        <button className="btn" onClick={onShowModal}>Перейти</button>
+      </div>
+      <BasketModal store={store} isOpen={isBasketModal} onClose={onCloseModal} totalPrice={totalPrice} />
     </div>
   );
 }
 
 Controls.propTypes = {
-  onAdd: PropTypes.func,
-};
-
-Controls.defaultProps = {
-  onAdd: () => {},
+  store: PropTypes.shape({
+    getState: PropTypes.func.isRequired,
+    subscribe: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 export default React.memo(Controls);

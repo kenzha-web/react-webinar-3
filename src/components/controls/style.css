@@ -1,5 +1,38 @@
 .Controls {
   display: flex;
   justify-content: flex-end;
-  padding: 20px;
+  border-bottom: 1px dashed #ccc;
 }
+
+.Controls-info {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  padding: 20px 10px;
+  font-family: Arial sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 21px;
+}
+
+.Controls-info-title {
+  color: #404040;
+}
+
+.Controls-info-actions {
+  font-weight: 700;
+  margin-left: 15px;
+}
+
+.Controls-action {
+  display: flex;
+  justify-content: flex-end;
+  padding: 20px 20px 20px 10px;
+}
+
+.btn {
+  width: 80px;
+  height: 21px;
+  cursor: pointer;
+}
+

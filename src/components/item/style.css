@@ -18,6 +18,23 @@
   padding: 20px 10px;
 }
 
+.Item-price, .Item-count {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  padding: 20px 10px;
+  font-family: Arial sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 21px;
+  color: #404040;
+}
+
+.Item-count {
+  width: 120px;
+  margin-left: 42px;
+}
+
 .Item-actions {
   display: flex;
   justify-content: flex-end;

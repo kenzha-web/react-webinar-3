@@ -1,0 +1,54 @@
+.Modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  opacity: 0;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.Modal-overlay {
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.Modal-content {
+  border-radius: 12px;
+  background: #fff;
+  transition: 0.3s transform;
+  transform: scale(0.5);
+  width: 960px;
+}
+
+.Modal-btn {
+  width: 80px;
+  height: 21px;
+  position: absolute;
+  top: 30px;
+  right: 20px;
+  z-index: 10;
+  cursor: pointer;
+}
+
+.Modal_opened {
+  pointer-events: auto;
+  opacity: 1;
+  z-index: 10;
+}
+
+.Modal_opened .Modal-content {
+  transform: scale(1);
+}
+
+
+.Modal_closing .Modal-content {
+  transform: scale(0.2);
+}
+

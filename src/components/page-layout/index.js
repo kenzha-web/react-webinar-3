@@ -3,7 +3,10 @@ import PropTypes from 'prop-types';
 import { cn as bem } from '@bem-react/classname';
 import './style.css';
 
-function PageLayout({ children }) {
+function PageLayout(props) {
+  const {
+    children = null
+  } = props
   const cn = bem('PageLayout');
 
   return (
