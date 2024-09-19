@@ -1,6 +1,7 @@
 import React, {useState, useCallback, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import BasketModal from "../basket-modal";
+import { plural } from '../../utils';
 import './style.css';
 
 function Controls(props) {
@@ -40,7 +41,11 @@ function Controls(props) {
         <div className="Controls-info-title">
           В корзине:
         </div>
-        <div className="Controls-info-actions">{totalItems === 0 ? `пусто` : `${totalItems} товара / ${totalPrice} ₽`}</div>
+        <div className="Controls-info-actions">{totalItems === 0 ? `пусто` : `${totalItems} ${plural(totalItems, {
+              one: 'товар',
+              few: 'товара',
+              many: 'товаров',
+            })} / ${totalPrice} ₽`}</div>
       </div>
       <div className="Controls-action">
         <button className="btn" onClick={onShowModal}>Перейти</button>
