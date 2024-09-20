@@ -2,59 +2,48 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './style.css';
 import {formatPrice} from "../../utils";
+import {cn as bem} from "@bem-react/classname";
 
-function Item(props) {
-  const {
-    item,
-    onDelete = () => {},
-    onAddToBasket = () => {},
-    isOpen
-  } = props
+const cn = bem("Item");
+
+function Item({item, onDelete, onAddToBasket}) {
 
   const callbacks = {
     onDelete: e => {
       e.stopPropagation();
-      onDelete(item.code);
+      onDelete?.(item.code);
     },
 
     onAddToBasket: e => {
       e.stopPropagation();
-      onAddToBasket(item.code);
+      onAddToBasket?.(item.code);
     },
   };
 
-  if(isOpen) {
-    return (
-      <div className="Item">
-        <div className="Item-code">{item.code}</div>
-        <div className="Item-title">
-          {item.title}
-        </div>
-        <div className="Item-price">
-          {`${formatPrice(item.price)}`}
-        </div>
-        <div className="Item-count">
-          {`${item.quantity} шт`}
-        </div>
-        <div className="Item-actions">
-          <button className="btn" onClick={callbacks.onDelete}>Удалить</button>
-        </div>
-      </div>
-    )
-  }
-
   return (
-    <div className="Item">
-      <div className="Item-code">{item.code}</div>
-      <div className="Item-title">
+    <div className={cn()}>
+      <div className={cn('code')}>{item.code}</div>
+      <div className={cn('title')}>
         {item.title}
       </div>
-      <div className="Item-price">
+      <div className={cn('price')}>
         {`${formatPrice(item.price)}`}
       </div>
-      <div className="Item-actions">
-        <button className="btn" onClick={callbacks.onAddToBasket}>Добавить</button>
-      </div>
+      {onDelete && (
+        <>
+          <div className={cn('count')}>
+            {`${item.quantity} шт`}
+          </div>
+          <div className={cn('actions')}>
+            <button className={cn('btn')} onClick={callbacks.onDelete}>Удалить</button>
+          </div>
+        </>
+      )}
+      {onAddToBasket && (
+        <div className="Item-actions">
+          <button className={cn('btn')} onClick={callbacks.onAddToBasket}>Добавить</button>
+        </div>
+      )}
     </div>
   );
 }

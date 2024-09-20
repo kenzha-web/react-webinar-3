@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import {cn as bem} from "@bem-react/classname";
 import './style.css';
 
+const cn = bem('Head');
+
 function Head(props) {
   const { title } = props;
-  const cn = bem('Head');
 
   return (
     <div className={cn()}>

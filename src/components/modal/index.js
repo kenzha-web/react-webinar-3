@@ -4,13 +4,15 @@ import { cn as bem } from '@bem-react/classname';
 import PropTypes from "prop-types";
 import "./style.css"
 
+const cn = bem('Modal');
+
 function Modal(props) {
   const {
     children = null,
     isOpen = false,
     onClose = () => {}
   } = props;
-  const cn = bem('Modal');
+
   const [isClosing, setIsClosing] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const timerRef = useRef();

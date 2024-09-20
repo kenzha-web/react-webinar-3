@@ -8,7 +8,6 @@
   display: flex;
   justify-content: flex-end;
   width: 100%;
-  padding: 20px 10px;
   font-family: Arial sans-serif;
   font-weight: 400;
   font-size: 18px;
@@ -26,13 +25,12 @@
 
 .Controls-action {
   display: flex;
+  flex-shrink: 0;
   justify-content: flex-end;
   padding: 20px 20px 20px 10px;
 }
 
-.btn {
-  width: 80px;
+.Controls-btn {
   height: 21px;
   cursor: pointer;
 }
-

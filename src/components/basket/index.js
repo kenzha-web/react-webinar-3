@@ -1,19 +1,18 @@
 import Head from "../head";
 import React, {useState, useEffect, memo, useCallback } from "react";
-import BasketList from "../baket-list";
 import PropTypes from "prop-types";
-
 import {cn as bem} from "@bem-react/classname";
 import './styles.css'
+import List from "../list";
+
+const cn = bem('Basket');
 
 const Basket = memo((props) => {
   const {
     store,
-    isOpen= false,
     totalPrice
   } = props;
 
-  const cn = bem('Basket');
   const [basket, setBasket] = useState(store.getState().basket);
 
   const callbacks = {
@@ -35,12 +34,11 @@ const Basket = memo((props) => {
 
   return (
     <div className={cn()}>
-      <Head className={cn('head')} title="Корзина" />
-      <BasketList
-        basket={basket}
-        isOpen={isOpen}
-        onDeleteItem={callbacks.onDeleteItem}
+      <Head
+        className={cn('head')}
+        title="Корзина"
       />
+      <List list={basket} onDeleteItemToBasket={callbacks.onDeleteItem}/>
       <div className={cn('total')}>
         <div className={cn('total-text')}>Итого</div>
         <div className={cn('total-price')}>
@@ -57,7 +55,6 @@ Basket.propTypes = {
     subscribe: PropTypes.func,
     deleteItem: PropTypes.func,
   }).isRequired,
-  isOpen: PropTypes.bool,
   totalPrice: PropTypes.oneOfType([
     PropTypes.number,
     PropTypes.string,

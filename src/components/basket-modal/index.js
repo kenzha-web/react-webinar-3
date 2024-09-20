@@ -3,20 +3,20 @@ import Modal from "../modal";
 import Basket from "../basket";
 import PropTypes from "prop-types";
 import {cn as bem} from "@bem-react/classname";
-import {formatPrice} from "../../utils";
+
+const cn = bem('BasketModal');
 
 function BasketModal(props) {
   const {
     store,
-    isOpen = false,
+    isOpen,
     onClose = () => {},
     totalPrice
   } = props;
-  const cn = bem('BasketModal');
 
   return (
     <Modal className={cn()} isOpen={isOpen} onClose={onClose}>
-      <Basket store={store} isOpen={isOpen} totalPrice={totalPrice} />
+      <Basket store={store} totalPrice={totalPrice} />
     </Modal>
   )
 }
