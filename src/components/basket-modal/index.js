@@ -3,6 +3,7 @@ import Modal from "../modal";
 import Basket from "../basket";
 import PropTypes from "prop-types";
 import {cn as bem} from "@bem-react/classname";
+import {formatPrice} from "../../utils";
 
 function BasketModal(props) {
   const {
@@ -27,7 +28,10 @@ BasketModal.propTypes = {
   }).isRequired,
   isOpen: PropTypes.bool,
   onClose: PropTypes.func,
-  totalPrice: PropTypes.number,
+  totalPrice: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.string,
+  ]),
 };
 
 export default BasketModal;

@@ -1,7 +1,7 @@
 import React, {useState, useCallback, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import BasketModal from "../basket-modal";
-import { plural } from '../../utils';
+import {formatPrice, plural} from '../../utils';
 import './style.css';
 
 function Controls(props) {
@@ -26,7 +26,7 @@ function Controls(props) {
       const totalPrice = basket.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
       setTotalItems(uniqueItems);
-      setTotalPrice(totalPrice);
+      setTotalPrice(formatPrice(totalPrice));
     };
 
     const unsubscribe = store.subscribe(updateBasketInfo);
@@ -45,7 +45,7 @@ function Controls(props) {
               one: 'товар',
               few: 'товара',
               many: 'товаров',
-            })} / ${totalPrice} ₽`}</div>
+            })} / ${totalPrice}`}</div>
       </div>
       <div className="Controls-action">
         <button className="btn" onClick={onShowModal}>Перейти</button>

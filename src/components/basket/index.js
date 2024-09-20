@@ -2,6 +2,7 @@ import Head from "../head";
 import React, {useState, useEffect, memo, useCallback } from "react";
 import BasketList from "../baket-list";
 import PropTypes from "prop-types";
+
 import {cn as bem} from "@bem-react/classname";
 import './styles.css'
 
@@ -11,6 +12,7 @@ const Basket = memo((props) => {
     isOpen= false,
     totalPrice
   } = props;
+
   const cn = bem('Basket');
   const [basket, setBasket] = useState(store.getState().basket);
 
@@ -42,7 +44,7 @@ const Basket = memo((props) => {
       <div className={cn('total')}>
         <div className={cn('total-text')}>Итого</div>
         <div className={cn('total-price')}>
-          {totalPrice} ₽
+          {totalPrice}
         </div>
       </div>
     </div>
@@ -56,7 +58,10 @@ Basket.propTypes = {
     deleteItem: PropTypes.func,
   }).isRequired,
   isOpen: PropTypes.bool,
-  totalPrice: PropTypes.number,
+  totalPrice: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.string,
+  ]),
 };
 
 export default Basket;
