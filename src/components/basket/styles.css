@@ -1,21 +1,18 @@
 .Basket {
   display: flex;
   flex-direction: column;
-  width: 100%;
-  height: 407px;
 }
 
 .Basket-total {
   display: flex;
   justify-content: flex-end;
-  gap: 53px;
+  gap: 63px;
   transition: background-color 1s;
   padding: 20px 0;
+  margin-bottom: 50px;
 }
 
 .Basket-total-text, .Basket-total-price {
-  display: flex;
-  justify-content: flex-end;
   font-family: Arial sans-serif;
   font-weight: 700;
   font-size: 18px;
@@ -23,7 +20,7 @@
 }
 
 .Basket-total-price {
-  padding-right: 120px;
+  padding-right: 90px;
 }
 
 

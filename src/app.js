@@ -5,6 +5,8 @@ import List from './components/list';
 import Controls from './components/controls';
 import Head from './components/head';
 import PageLayout from './components/page-layout';
+import ProductItem from "./components/product-item";
+import BasketItem from "./components/basket-item";
 
 /**
  * Приложение
@@ -13,6 +15,7 @@ import PageLayout from './components/page-layout';
  */
 function App({ store }) {
   const list = store.getState().list;
+  const basket = store.getState().basket;
 
   const [isBasketModal, setIsBasketModal] = useState(false);
 
@@ -29,13 +32,10 @@ function App({ store }) {
 
   useEffect(() => {
     const updateBasketInfo = () => {
-      const basket = store.getState().basket;
+      const { totalItems, totalPrice } = store.getState();
 
-      const uniqueItems = basket.length;
-      const totalPrice = basket.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-
-      setTotalItems(uniqueItems);
-      setTotalPrice(formatPrice(totalPrice));
+      setTotalItems(totalItems || 0);
+      setTotalPrice(formatPrice(totalPrice || 0));
     };
 
     const unsubscribe = store.subscribe(updateBasketInfo);
@@ -51,13 +51,12 @@ function App({ store }) {
       },
       [store],
     ),
-
     onDeleteItemToBasket: useCallback(
       code => {
         store.deleteItem(code);
       },
       [store],
-    ),
+    )
   };
 
   return (
@@ -85,7 +84,13 @@ function App({ store }) {
             key: 'go-to-basket',
             text: 'Перейти',
             handler: onShowModal,
-            additionalChildren: <BasketModal store={store} isOpen={isBasketModal} onClose={onCloseModal} totalPrice={totalPrice} />
+            additionalChildren: <BasketModal
+              basket={basket}
+              onDeleteItemToBasket={callbacks.onDeleteItemToBasket}
+              isOpen={isBasketModal}
+              onClose={onCloseModal}
+              totalPrice={totalPrice}
+            />
           },
           {
             key: 'clear-basket',
@@ -95,8 +100,14 @@ function App({ store }) {
         ]}
       />
       <List
-        list={list}
-        onAddItemToBasket={callbacks.onAddItemToBasket}
+        items={list}
+        renderItem={(item, onItemAction) => (
+          <ProductItem
+            item={item}
+            onAddToBasket={() => onItemAction(item.code)}
+          />
+        )}
+        onItemAction={callbacks.onAddItemToBasket}
       />
     </PageLayout>
   );

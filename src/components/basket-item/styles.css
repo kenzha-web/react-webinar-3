@@ -1,0 +1,41 @@
+.BasketItem {
+  display: flex;
+  justify-content: flex-start;
+  transition: background-color 1s;
+}
+
+.BasketItem_selected {
+  background: #75aaf1;
+  color: #fff;
+}
+
+.BasketItem-code {
+  padding: 20px 10px 20px 20px;
+}
+
+.BasketItem-title {
+  width: 100%;
+  padding: 20px 10px;
+}
+
+.BasketItem-price, .Item-count {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  padding: 20px 10px;
+  font-family: Arial sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 21px;
+  color: #404040;
+}
+
+.BasketItem-count {
+  max-width: 100px;
+}
+
+.BasketItem-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 20px 20px 20px 10px;
+}

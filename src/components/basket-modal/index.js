@@ -8,7 +8,8 @@ const cn = bem('BasketModal');
 
 function BasketModal(props) {
   const {
-    store,
+    basket,
+    onDeleteItemToBasket,
     isOpen,
     onClose = () => {},
     totalPrice
@@ -16,16 +17,14 @@ function BasketModal(props) {
 
   return (
     <Modal className={cn()} isOpen={isOpen} onClose={onClose}>
-      <Basket store={store} totalPrice={totalPrice} />
+      <Basket basket={basket} onDeleteItemToBasket={onDeleteItemToBasket} totalPrice={totalPrice} />
     </Modal>
   )
 }
 
 BasketModal.propTypes = {
-  store: PropTypes.shape({
-    getState: PropTypes.func,
-    subscribe: PropTypes.func,
-  }).isRequired,
+  basket: PropTypes.array.isRequired,
+  onDeleteItemToBasket: PropTypes.func,
   isOpen: PropTypes.bool,
   onClose: PropTypes.func,
   totalPrice: PropTypes.oneOfType([

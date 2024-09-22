@@ -4,33 +4,16 @@ import PropTypes from "prop-types";
 import {cn as bem} from "@bem-react/classname";
 import './styles.css'
 import List from "../list";
+import BasketItem from "../basket-item";
 
 const cn = bem('Basket');
 
 const Basket = memo((props) => {
   const {
-    store,
+    basket,
+    onDeleteItemToBasket,
     totalPrice
   } = props;
-
-  const [basket, setBasket] = useState(store.getState().basket);
-
-  const callbacks = {
-    onDeleteItem: useCallback(
-      code => {
-        store.deleteItem(code);
-      },
-      [store],
-    ),
-  };
-
-  useEffect(() => {
-    const unsubscribe = store.subscribe(() => {
-      setBasket(store.getState().basket);
-    });
-
-    return () => unsubscribe();
-  }, [store]);
 
   return (
     <div className={cn()}>
@@ -38,7 +21,16 @@ const Basket = memo((props) => {
         className={cn('head')}
         title="Корзина"
       />
-      <List list={basket} onDeleteItemToBasket={callbacks.onDeleteItem}/>
+      <List
+        items={basket}
+        renderItem={(item, onItemAction) => (
+          <BasketItem
+            item={item}
+            onDelete={() => onItemAction(item.code)}
+          />
+        )}
+        onItemAction={onDeleteItemToBasket}
+      />
       <div className={cn('total')}>
         <div className={cn('total-text')}>Итого</div>
         <div className={cn('total-price')}>
@@ -50,11 +42,8 @@ const Basket = memo((props) => {
 })
 
 Basket.propTypes = {
-  store: PropTypes.shape({
-    getState: PropTypes.func,
-    subscribe: PropTypes.func,
-    deleteItem: PropTypes.func,
-  }).isRequired,
+  basket: PropTypes.array,
+  onDeleteItemToBasket: PropTypes.func,
   totalPrice: PropTypes.oneOfType([
     PropTypes.number,
     PropTypes.string,

@@ -31,8 +31,7 @@
 }
 
 .Item-count {
-  width: 120px;
-  margin-left: 42px;
+  max-width: 100px;
 }
 
 .Item-actions {

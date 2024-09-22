@@ -6,14 +6,9 @@ import {cn as bem} from "@bem-react/classname";
 
 const cn = bem("Item");
 
-function Item({item, onDelete, onAddToBasket}) {
+function ProductItem({item, onAddToBasket}) {
 
   const callbacks = {
-    onDelete: e => {
-      e.stopPropagation();
-      onDelete?.(item.code);
-    },
-
     onAddToBasket: e => {
       e.stopPropagation();
       onAddToBasket?.(item.code);
@@ -29,34 +24,20 @@ function Item({item, onDelete, onAddToBasket}) {
       <div className={cn('price')}>
         {`${formatPrice(item.price)}`}
       </div>
-      {onDelete && (
-        <>
-          <div className={cn('count')}>
-            {`${item.quantity} шт`}
-          </div>
-          <div className={cn('actions')}>
-            <button className={cn('btn')} onClick={callbacks.onDelete}>Удалить</button>
-          </div>
-        </>
-      )}
-      {onAddToBasket && (
-        <div className="Item-actions">
-          <button className={cn('btn')} onClick={callbacks.onAddToBasket}>Добавить</button>
-        </div>
-      )}
+      <div className="Item-actions">
+        <button className={cn('btn')} onClick={callbacks.onAddToBasket}>Добавить</button>
+      </div>
     </div>
   );
 }
 
-Item.propTypes = {
+ProductItem.propTypes = {
   item: PropTypes.shape({
     code: PropTypes.number,
     title: PropTypes.string,
     price: PropTypes.number,
-    quantity: PropTypes.number
   }).isRequired,
-  onDelete: PropTypes.func,
   onAddToBasket: PropTypes.func,
 };
 
-export default React.memo(Item);
+export default React.memo(ProductItem);
