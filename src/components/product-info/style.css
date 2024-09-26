@@ -1,0 +1,10 @@
+.ProductInfo {
+  font-family: Arial, sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  padding: 0 20px;
+}
+
+p {
+  margin-bottom: 20px;
+}

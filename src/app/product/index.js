@@ -3,26 +3,26 @@ import Item from '../../components/item';
 import PageLayout from '../../components/page-layout';
 import Head from '../../components/head';
 import BasketTool from '../../components/basket-tool';
-import List from '../../components/list';
 import useStore from '../../store/use-store';
 import useSelector from '../../store/use-selector';
-import Paginator from "../../components/paginator";
+import ProductInfo from "../../components/product-info";
+import {useParams} from "react-router-dom";
 
-function Main() {
+function Product() {
   const store = useStore();
+  const { id } = useParams();
 
   const select = useSelector(state => ({
-    list: state.catalog.list,
-    totalItemsCount: state.catalog.totalItemsCount,
-    page: state.catalog.page,
+    // id: state.catalog.list.map(item => item._id),
+    product: state.product,
     amount: state.basket.amount,
     sum: state.basket.sum,
   }));
 
   useEffect(() => {
-    store.actions.catalog.load(select.page);
+    store.actions.product.productLoad(id);
 
-  }, [select.page]);
+  }, [id]);
 
   const callbacks = {
     // Добавление в корзину
@@ -30,7 +30,7 @@ function Main() {
     // Открытие модалки корзины
     openModalBasket: useCallback(() => store.actions.modals.open('basket'), [store]),
 
-    changePage: useCallback((page) => store.actions.catalog.changePage(page), [store])
+    changeId: useCallback((_id) => store.actions.product.changeId(_id), [store])
   };
 
   const renders = {
@@ -44,19 +44,15 @@ function Main() {
 
   return (
     <PageLayout>
-      <main style={{display: 'flex', flexDirection: 'column', height: '100%', flexGrow: 1, paddingBottom: '20px'}}>
-        <Head title="Магазин" />
-        <BasketTool onOpen={callbacks.openModalBasket} amount={select.amount} sum={select.sum} />
-        <List list={select.list} renderItem={renders.item} />
-        <Paginator
-          totalItemsCount={select.totalItemsCount}
-          pageSize={10}
-          currentPage={select.page}
-          onChangePage={callbacks.changePage}
-        />
-      </main>
+      <Head title="Название товара" />
+      <BasketTool onOpen={callbacks.openModalBasket} amount={select.amount} sum={select.sum} />
+      <ProductInfo
+        id={id}
+        product={select.product}
+        onAdd={callbacks.addToBasket}
+      />
     </PageLayout>
   );
 }
 
-export default memo(Main);
+export default memo(Product);

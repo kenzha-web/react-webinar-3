@@ -1,0 +1,28 @@
+.Paginator {
+  margin-top: 20px;
+  text-align: right;
+  padding-right: 10px;
+}
+
+.Paginator .page-number {
+  padding: 5px 10px;
+  margin: 0 5px;
+  cursor: pointer;
+}
+
+.Paginator .page-number:hover {
+  background-color: #ccc;
+}
+
+.Paginator_selected-page {
+  background-color: #0087e9;
+  color: white;
+  border-radius: 5px;
+}
+
+.Paginator .dots {
+  padding: 5px;
+  margin: 0 5px;
+  color: #888;
+}
+
