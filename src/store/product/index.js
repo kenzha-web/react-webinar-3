@@ -25,12 +25,7 @@ class Product extends StoreModule {
       this.setState(
         {
           ...this.getState(),
-          id: json.result._id,
-          description: json.result.description,
-          madeIn: json.result.madeIn.title,
-          category: json.result.category.title,
-          edition: json.result.edition,
-          price: json.result.price
+          ...json.result
         },
       );
     } catch(error) {

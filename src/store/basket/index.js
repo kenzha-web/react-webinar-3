@@ -19,7 +19,7 @@ class Basket extends StoreModule {
     let exist = false;
     const list = this.getState().list.map(currentItem => {
       let result = currentItem;
-      if (currentItem.id === item.id) {
+      if (currentItem._id === item._id) {
         exist = true; // Запомним, что был найден в корзине
         result = { ...currentItem, amount: currentItem.amount + 1 };
       }
@@ -30,6 +30,7 @@ class Basket extends StoreModule {
     if (!exist) {
       // Поиск товара в каталоге, чтобы его добавить в корзину.
       // @todo В реальном приложении будет запрос к АПИ вместо поиска по состоянию.
+      // const item = this.store.getState().catalog.list.find(currentItem => currentItem._id === item._id);
       list.push({ ...item, amount: 1 }); // list уже новый, в него можно пушить.
       // Добавляем к сумме.
       sum += item.price;

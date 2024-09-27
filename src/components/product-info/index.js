@@ -14,8 +14,8 @@ let ProductInfo = ({product, onAdd}) => {
   return <div className={cn()}>
     <div className={cn()}>
       <p>Описание: {description}</p>
-      <p>Производитель: <strong>{madeIn}</strong></p>
-      <p>Категория: <strong>{category}</strong></p>
+      <p>Производитель: <strong>{madeIn.title}</strong></p>
+      <p>Категория: <strong>{category.title}</strong></p>
       <p>Издание: <strong>{edition}</strong></p>
       <p><strong>Цена: {numberFormat(price)} ₽</strong></p>
       <button onClick={callbacks.onAdd}>Добавить</button>
