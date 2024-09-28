@@ -1,27 +1,27 @@
-import { memo, useState } from 'react';
+import { memo } from 'react';
+import { NavLink } from "react-router-dom";
 import PropTypes from 'prop-types';
+import { numberFormat } from '../utils/utils';
 import { cn as bem } from '@bem-react/classname';
-import { numberFormat } from '../../utils';
 import './style.css';
-import {NavLink} from "react-router-dom";
 
-function Item(props) {
-  const cn = bem('Item');
+const cn = bem('Item');
 
+function Item({item, onAdd, link }) {
   const callbacks = {
-    onAdd: e => props.onAdd(props.item),
+    onAdd: e => onAdd(item),
   };
 
   return (
     <div className={cn()}>
       {/*<div className={cn('code')}>{props.item._id}</div>*/}
       <div className={cn('title')}>
-        <NavLink to={'/product/' + props.item._id} className={cn('nav')}>
-            <span className={cn('title-text')}>{props.item.title}</span>
+        <NavLink to={link} className={cn('nav')}>
+            <span className={cn('title-text')}>{item.title}</span>
         </NavLink>
       </div>
       <div className={cn('actions')}>
-        <div className={cn('price')}>{numberFormat(props.item.price)} ₽</div>
+        <div className={cn('price')}>{numberFormat(item.price)} ₽</div>
         <button onClick={callbacks.onAdd}>Добавить</button>
       </div>
     </div>

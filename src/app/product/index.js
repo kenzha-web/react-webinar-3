@@ -1,5 +1,4 @@
 import { memo, useCallback, useEffect } from 'react';
-import Item from '../../components/item';
 import PageLayout from '../../components/page-layout';
 import Head from '../../components/head';
 import BasketTool from '../../components/basket-tool';
@@ -7,15 +6,13 @@ import useStore from '../../store/use-store';
 import useSelector from '../../store/use-selector';
 import ProductInfo from "../../components/product-info";
 import {useParams} from "react-router-dom";
-import List from "../../components/list";
+import Menu from "../../components/menu";
 
 function Product() {
   const store = useStore();
   const { id } = useParams();
 
   const select = useSelector(state => ({
-    // id: state.catalog.list.map(item => item._id),
-    // list: state.catalog.list,
     product: state.product,
     amount: state.basket.amount,
     sum: state.basket.sum,
@@ -37,7 +34,8 @@ function Product() {
 
   return (
     <PageLayout>
-      <Head title="Название товара" />
+      <Head title={select.product.title} />
+      <Menu />
       <BasketTool onOpen={callbacks.openModalBasket} amount={select.amount} sum={select.sum} />
       <ProductInfo
         product={select.product}

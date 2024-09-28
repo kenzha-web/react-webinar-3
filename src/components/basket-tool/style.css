@@ -1,19 +1,9 @@
 /* Контрол с общими действиями */
 .BasketTool {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   padding: 20px;
   font-size: 18px;
-}
-
-.BasketTool-nav {
-  font-family: Arial, sans-serif;
-  font-weight: 400;
-  font-size: 18px;
-  color: #0087E9;
-}
-
-.BasketTool-label {
 }
 
 .BasketTool-total {

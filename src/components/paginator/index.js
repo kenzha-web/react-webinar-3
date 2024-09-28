@@ -1,48 +1,81 @@
-import React from 'react';
+import React, { useState } from 'react';
 import "./style.css";
-import {cn as bem} from "@bem-react/classname";
+import { cn as bem } from "@bem-react/classname";
 
 const cn = bem('Paginator');
 
-function pagination(currentPage, totalPages, offset = 0) {
+function pagination(currentPage, totalPages, offset = 3) {
   const pages = [];
 
   pages.push(1);
 
-  if (offset > 0 && currentPage > offset) {
-    pages.push('...');
-  } else {
-    pages.push(...Array.from({length: offset}, (_, i) => i + 2));
+  if (currentPage === 1 || currentPage === 2) {
+    for (let i = 2; i <= Math.min(3, totalPages); i++) {
+      pages.push(i);
+    }
+    if (totalPages > 3) {
+      pages.push('...');
+    }
   }
 
-  if (currentPage > offset && currentPage <= totalPages - offset) {
+  else if (currentPage === 3) {
+    for (let i = 2; i <= Math.min(4, totalPages); i++) {
+      pages.push(i);
+    }
+    if (totalPages > 4) {
+      pages.push('...');
+    }
+  }
+
+  else if (currentPage > 3 && currentPage <= totalPages - 3) {
+    pages.push('...');
     pages.push(currentPage - 1, currentPage, currentPage + 1);
-  }
-
-  if (offset > 0 && totalPages - currentPage >= offset) {
     pages.push('...');
-  } else {
-    pages.push(...Array.from({length: offset}, (_, i) => totalPages - ((offset - i))));
   }
 
-  pages.push(totalPages);
+  else if (currentPage === totalPages - 2) {
+    pages.push('...');
+    pages.push(totalPages - 3, totalPages - 2, totalPages - 1, totalPages);
+  }
+
+  else if (currentPage > totalPages - 3) {
+    if (totalPages > 4) {
+      pages.push('...');
+    }
+    for (let i = totalPages - 2; i <= totalPages; i++) {
+      if (i > 1) pages.push(i);
+    }
+  }
+
+  if (totalPages > 1 && pages[pages.length - 1] !== totalPages) {
+    pages.push(totalPages);
+  }
 
   return pages;
 }
 
 let Paginator = ({ totalItemsCount, pageSize, currentPage, onChangePage }) => {
+  const [showAllPages, setShowAllPages] = useState(false);
+
   let pagesCount = Math.ceil(totalItemsCount / pageSize);
 
-  console.log(pagination(currentPage + 1, pagesCount, 3), {currentPage})
+  const displayPageLimit = showAllPages ? pagesCount : 25;
+
+  const handlePageChange = (page) => {
+    if (page === 18 || page === 25) {
+      setShowAllPages(true);
+    }
+    onChangePage(page - 1);
+  };
 
   return (
     <div className={cn()}>
-      {pagination(currentPage + 1, pagesCount, 3).map((p, index) => {
+      {pagination(currentPage + 1, displayPageLimit, 3).map((p, index) => {
         return typeof p === 'number' ? (
           <span
             key={index}
             className={cn({ ['selected-page']: currentPage + 1 === p }, 'page-number')}
-            onClick={() => onChangePage(p - 1)}
+            onClick={() => handlePageChange(p)}
           >
             {p}
           </span>
@@ -57,7 +90,3 @@ let Paginator = ({ totalItemsCount, pageSize, currentPage, onChangePage }) => {
 };
 
 export default Paginator;
-
-
-
-

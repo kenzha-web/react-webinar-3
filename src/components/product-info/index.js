@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import "./style.css";
 import {cn as bem} from "@bem-react/classname";
-import {numberFormat} from "../../utils";
+import {numberFormat} from "../utils/utils";
 
 const cn = bem('ProductInfo');
 

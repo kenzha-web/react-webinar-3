@@ -1,4 +1,4 @@
-import { codeGenerator } from '../../utils';
+import { codeGenerator } from '../../components/utils/utils';
 import StoreModule from '../module';
 
 class Product extends StoreModule {
