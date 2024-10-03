@@ -5,25 +5,29 @@ import useInit from '../../hooks/use-init';
 import Navigation from '../../containers/navigation';
 import PageLayout from '../../components/page-layout';
 import Head from '../../components/head';
-import CatalogFilter from '../../containers/catalog-filter';
-import CatalogList from '../../containers/catalog-list';
-import LocaleSelect from '../../containers/locale-select';
-import {NavLink} from "react-router-dom";
 import Header from "../../components/header";
+import LocaleSelect from "../../containers/locale-select";
+import Spinner from "../../components/spinner";
+import useSelector from "../../hooks/use-selector";
 
 /**
  * Главная страница - первичная загрузка каталога
  */
-function Main() {
+function Profile() {
   const store = useStore();
 
   useInit(
     () => {
-      store.actions.catalog.initParams();
+      store.actions.profile.initParams();
     },
     [],
     true,
   );
+
+  const select = useSelector(state => ({
+    profile: state.profile.data,
+    waiting: state.profile.waiting,
+  }));
 
   const { t } = useTranslate();
 
@@ -34,10 +38,10 @@ function Main() {
         <LocaleSelect />
       </Head>
       <Navigation />
-      <CatalogFilter />
-      <CatalogList />
+      {select.waiting ? <Spinner /> : <div>{JSON.stringify(select.profile)}</div>} // Временно
+
     </PageLayout>
   );
 }
 
-export default memo(Main);
+export default memo(Profile);

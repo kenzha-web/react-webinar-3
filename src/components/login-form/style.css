@@ -1,0 +1,7 @@
+.LoginForm {
+  padding: 20px;
+}
+
+.LoginForm-email, .LoginForm-password {
+  margin-bottom: 20px;
+}

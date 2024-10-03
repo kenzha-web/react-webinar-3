@@ -1,0 +1,17 @@
+.Header {
+  height: 40px;
+  padding: 0 20px;
+  align-items: center;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.Header-btn {
+  width: 47px;
+  height: 21px;
+  text-decoration: none;
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  line-height: 14.95px;
+  color: #000;
+}

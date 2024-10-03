@@ -4,6 +4,8 @@ import useSelector from '../hooks/use-selector';
 import Main from './main';
 import Basket from './basket';
 import Article from './article';
+import ProfilePage from "../components/profile-page";
+import LoginPage from "./login";
 
 /**
  * Приложение
@@ -17,6 +19,8 @@ function App() {
       <Routes>
         <Route path={''} element={<Main />} />
         <Route path={'/articles/:id'} element={<Article />} />
+        <Route path={'/profile/:id'} element={<ProfilePage />} />
+        <Route path={'/login'} element={<LoginPage />} />
       </Routes>
 
       {activeModal === 'basket' && <Basket />}

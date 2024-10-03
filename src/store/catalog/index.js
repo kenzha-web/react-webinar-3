@@ -16,6 +16,7 @@ class CatalogState extends StoreModule {
         limit: 10,
         sort: 'order',
         query: '',
+        category: 'all',
       },
       count: 0,
       waiting: false,
@@ -85,6 +86,7 @@ class CatalogState extends StoreModule {
       fields: 'items(*),count',
       sort: params.sort,
       'search[query]': params.query,
+      ...(params.category !== 'all' && { 'search[category]': params.category }),
     };
 
     const response = await fetch(`/api/v1/articles?${new URLSearchParams(apiParams)}`);
