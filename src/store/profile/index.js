@@ -1,18 +1,16 @@
 import StoreModule from '../module';
 
-/**
- * Детальная информация о товаре для страницы товара
- */
 class ProfileState extends StoreModule {
   initState() {
     return {
       data: {},
-      waiting: false, // признак ожидания загрузки
+      waiting: true,
+      access: false,
+      token: localStorage.getItem('token') || null,
     };
   }
 
   async login(credentials) {
-    // Сброс текущего товара и установка признака ожидания загрузки
     this.setState({
       data: {},
       waiting: true,
@@ -22,30 +20,30 @@ class ProfileState extends StoreModule {
       const response = await fetch(
         `/api/v1/users/sign`, {
           method: "POST",
-          body: JSON.stringify({
-            "login": "test_1",
-            "password": "123456"
-          }),
           headers: {
             "Content-Type": "application/json",
           },
-          // body: JSON.stringify(credentials),
+          body: JSON.stringify({
+            login: credentials.login,
+            password: credentials.password,
+          }),
         }
       );
       const json = await response.json();
-
-      // Товар загружен успешно
+      localStorage.setItem('token', json.result.token);
       this.setState(
         {
           data: json.result,
+          access: true,
           waiting: false,
         },
       );
+
+      return this.getState();
     } catch (e) {
-      // Ошибка при загрузке
-      // @todo В стейт можно положить информацию об ошибке
       this.setState({
         data: {},
+        access: false,
         waiting: false,
       });
     }
@@ -68,26 +66,35 @@ class ProfileState extends StoreModule {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            "X-Token": "de9911233f62807e70a6b02329c0c60e6115c8032e2f8cd082ff64ff42d224d9"
+            // "X-Token": "de9911233f62807e70a6b02329c0c60e6115c8032e2f8cd082ff64ff42d224d9"
+            "X-Token": localStorage.getItem('token'),
           },
         }
       );
       const json = await response.json();
 
+      if (json.result.error != null) {
+        throw json.result.error.message;
+      }
+
       this.setState(
         {
           data: json.result,
+          access: true,
           waiting: false,
         },
       );
     } catch (e) {
-      // Ошибка при загрузке
-      // @todo В стейт можно положить информацию об ошибке
       this.setState({
         data: {},
+        access: false,
         waiting: false,
       });
     }
+  }
+  logout() {
+    localStorage.removeItem('token');
+    this.setState({ data: {}, token: null });
   }
 }
 

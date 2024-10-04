@@ -7,11 +7,17 @@
 }
 
 .Header-btn {
-  width: 47px;
+  width: 59px;
   height: 21px;
   text-decoration: none;
   font-family: Arial, sans-serif;
   font-size: 13px;
-  line-height: 14.95px;
+  line-height: 14px;
   color: #000;
+  margin-left: 10px;
+}
+
+.Header-nav {
+  color: #0087E9;
+  font-size: 13px;
 }

@@ -1,34 +1,16 @@
-import { memo } from 'react';
-import useStore from '../../hooks/use-store';
-import useTranslate from '../../hooks/use-translate';
-import useInit from '../../hooks/use-init';
+import {memo} from 'react';
 import Navigation from '../../containers/navigation';
 import PageLayout from '../../components/page-layout';
 import Head from '../../components/head';
 import Header from "../../components/header";
 import LocaleSelect from "../../containers/locale-select";
-import Spinner from "../../components/spinner";
-import useSelector from "../../hooks/use-selector";
+import ProfileInfo from "../../components/profile-info";
+import useTranslate from "../../hooks/use-translate";
 
 /**
  * Главная страница - первичная загрузка каталога
  */
-function Profile() {
-  const store = useStore();
-
-  useInit(
-    () => {
-      store.actions.profile.initParams();
-    },
-    [],
-    true,
-  );
-
-  const select = useSelector(state => ({
-    profile: state.profile.data,
-    waiting: state.profile.waiting,
-  }));
-
+function ProfilePage() {
   const { t } = useTranslate();
 
   return (
@@ -38,10 +20,9 @@ function Profile() {
         <LocaleSelect />
       </Head>
       <Navigation />
-      {select.waiting ? <Spinner /> : <div>{JSON.stringify(select.profile)}</div>} // Временно
-
+      <ProfileInfo />
     </PageLayout>
   );
 }
 
-export default memo(Profile);
+export default memo(ProfilePage);

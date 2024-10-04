@@ -45,9 +45,9 @@ ArticleCard.propTypes = {
   t: PropTypes.func,
 };
 
-ArticleCard.defaultProps = {
-  onAdd: () => {},
-  t: text => text,
-};
+// ArticleCard.defaultProps = {
+//   onAdd: () => {},
+//   t: text => text,
+// };
 
 export default memo(ArticleCard);

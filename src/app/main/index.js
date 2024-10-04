@@ -8,7 +8,6 @@ import Head from '../../components/head';
 import CatalogFilter from '../../containers/catalog-filter';
 import CatalogList from '../../containers/catalog-list';
 import LocaleSelect from '../../containers/locale-select';
-import {NavLink} from "react-router-dom";
 import Header from "../../components/header";
 
 /**

@@ -1,20 +1,25 @@
 import { memo, useState } from 'react';
 import { cn as bem } from '@bem-react/classname';
+import useStore from "../../hooks/use-store";
+import {useNavigate} from "react-router-dom";
 import './style.css';
 
 const cn = bem('LoginForm');
 
-function LoginForm({ onSubmit }) {
-  const [credentials, setCredentials] = useState({ login: '', password: '' });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setCredentials((prev) => ({ ...prev, [name]: value }));
-  };
+function LoginForm() {
+  const store = useStore();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(credentials);
+    store.actions.profile.login({
+      login: email,
+      password: password,
+    }).then(({access}) => {
+      access && navigate('/profile');
+    });
   };
 
   return (
@@ -24,12 +29,11 @@ function LoginForm({ onSubmit }) {
         <div className={cn('email')}>
           <label htmlFor="email">Логин</label><br />
           <input
-            type="email"
-            name="login"
-            id="login"
-            value={credentials.login}
-            onChange={handleChange}
-            required
+            type="text"
+            name="email"
+            id="email"
+            required value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
         <div className={cn('password')}>
@@ -38,13 +42,12 @@ function LoginForm({ onSubmit }) {
             type="password"
             name="password"
             id="password"
-            value={credentials.password}
-            onChange={handleChange}
-            required
+            required value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
         </div>
         <div className={cn('btn')}>
-          <button type="submit">Вход</button>
+          <button type="submit">Войти</button>
         </div>
       </form>
     </div>
