@@ -2,7 +2,7 @@ import { memo } from 'react';
 import PropTypes from 'prop-types';
 import './style.css';
 
-function Controls({ onAdd }) {
+function Controls({ onAdd = () => {} }) {
   return (
     <div className="Controls">
       <button onClick={() => onAdd()}>Добавить</button>
@@ -13,9 +13,5 @@ function Controls({ onAdd }) {
 Controls.propTypes = {
   onAdd: PropTypes.func,
 };
-
-// Controls.defaultProps = {
-//   onAdd: () => {},
-// };
 
 export default memo(Controls);

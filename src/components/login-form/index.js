@@ -3,6 +3,8 @@ import { cn as bem } from '@bem-react/classname';
 import useStore from "../../hooks/use-store";
 import {useNavigate} from "react-router-dom";
 import './style.css';
+import useTranslate from "../../hooks/use-translate";
+import login from "../../app/login";
 
 const cn = bem('LoginForm');
 
@@ -10,24 +12,37 @@ function LoginForm() {
   const store = useStore();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const { t } = useTranslate();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    store.actions.profile.login({
-      login: email,
-      password: password,
-    }).then(({access}) => {
-      access && navigate('/profile');
-    });
+    setError('');
+
+    try {
+      const result = await store.actions.profile.login({
+        login: email,
+        password: password,
+      });
+
+      if (result && result.access) {
+        navigate('/profile');
+      } else {
+        setError(t('login.error'));
+      }
+    } catch (err) {
+      setError(err.message || t('login.error.message'));
+    }
   };
 
   return (
     <div className={cn()}>
-      <h3>Вход</h3>
+      <h3>{t('login.title')}</h3>
       <form onSubmit={handleSubmit}>
         <div className={cn('email')}>
-          <label htmlFor="email">Логин</label><br />
+          <label htmlFor="email">{t('login.login')}</label><br />
           <input
             type="text"
             name="email"
@@ -37,7 +52,7 @@ function LoginForm() {
           />
         </div>
         <div className={cn('password')}>
-          <label htmlFor="password">Пароль</label><br />
+          <label htmlFor="password">{t('login.password')}</label><br />
           <input
             type="password"
             name="password"
@@ -46,8 +61,9 @@ function LoginForm() {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
+        {error && <div className={cn('error')}>{error}</div>}
         <div className={cn('btn')}>
-          <button type="submit">Войти</button>
+          <button type="submit">{t('login.enter')}</button>
         </div>
       </form>
     </div>

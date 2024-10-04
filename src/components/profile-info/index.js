@@ -11,9 +11,8 @@ const cn = bem("ProfilePage")
 
 function ProfileInfo() {
   const store = useStore();
+  const { t } = useTranslate();
   const navigate = useNavigate();
-
-  // const { t } = useTranslate();
 
   const select = useSelector(state => ({
     user: state.profile.data,
@@ -38,15 +37,15 @@ function ProfileInfo() {
 
   return (
     <div className={cn()}>
-      <h2>Профиль</h2>
+      <h2>{t('profile.title')}</h2>
       <div className={cn("name")}>
-        <p>Имя: <strong>{select.user?.profile?.name}</strong></p>
+        <p>{t('profile.name')} <strong>{select.user?.profile?.name}</strong></p>
       </div>
       <div className={cn("phone")}>
-        <p>Телефон: <strong>{select.user?.profile?.phone}</strong></p>
+        <p>{t('profile.phone')} <strong>{select.user?.profile?.phone}</strong></p>
       </div>
       <div className={cn("email")}>
-        <p>email: <strong>{select.user?.email}</strong></p>
+        <p>{t('profile.email')} <strong>{select.user?.email}</strong></p>
       </div>
     </div>
   )

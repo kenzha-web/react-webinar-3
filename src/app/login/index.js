@@ -1,5 +1,5 @@
 import {memo, useCallback, useEffect, useMemo} from 'react';
-import {NavLink, useNavigate, useParams} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import useStore from '../../hooks/use-store';
 import useSelector from '../../hooks/use-selector';
 import useTranslate from '../../hooks/use-translate';
@@ -15,6 +15,7 @@ import Header from "../../components/header";
  */
 function LoginPage() {
   const store = useStore();
+  const { t } = useTranslate();
   const navigate = useNavigate();
 
   const select = useSelector(state => ({
@@ -26,8 +27,6 @@ function LoginPage() {
       navigate('/profile');
     }
   }, [select.token]);
-
-  const { t } = useTranslate();
 
   const handleLogin = useCallback((credentials) => {
     store.actions.profile.login(credentials);

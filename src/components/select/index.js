@@ -29,8 +29,4 @@ Select.propTypes = {
   onChange: PropTypes.func,
 };
 
-// Select.defaultProps = {
-//   onChange: () => {},
-// };
-
 export default memo(Select);
