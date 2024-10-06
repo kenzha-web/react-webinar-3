@@ -5,7 +5,6 @@ import useSelector from "../../hooks/use-selector";
 import {useEffect} from "react";
 import {cn as bem} from "@bem-react/classname";
 import './style.css';
-import Spinner from "../spinner";
 
 const cn = bem("ProfilePage")
 
@@ -30,10 +29,6 @@ function ProfileInfo() {
       navigate('/login')
     }
   }, [select.access, select.waiting])
-
-  if (select.waiting) {
-    return <div><Spinner/></div>;
-  }
 
   return (
     <div className={cn()}>

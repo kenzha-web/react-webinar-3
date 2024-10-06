@@ -1,4 +1,4 @@
-import {memo, useCallback, useEffect, useMemo} from 'react';
+import {memo, useCallback, useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
 import useStore from '../../hooks/use-store';
 import useSelector from '../../hooks/use-selector';
@@ -34,12 +34,20 @@ function LoginPage() {
 
   return (
     <PageLayout>
-      <Header />
+      <Header
+        loginLabel={t('header.login')}
+        logoutLabel={t('header.logout')}
+      />
       <Head title={"Магазин"}>
         <LocaleSelect />
       </Head>
       <Navigation />
-      <LoginForm onSubmit={handleLogin} />
+      <LoginForm
+        onSubmit={handleLogin}
+        title={t('login.title')}
+        loginLabel={t('login.login')}
+        passwordLabel={t('login.password')}
+        enterButtonLabel={t('login.enter')}/>
     </PageLayout>
   );
 }

@@ -28,7 +28,10 @@ function Main() {
 
   return (
     <PageLayout>
-      <Header />
+      <Header
+        loginLabel={t('header.login')}
+        logoutLabel={t('header.logout')}
+      />
       <Head title={t('title')}>
         <LocaleSelect />
       </Head>

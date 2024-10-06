@@ -6,16 +6,22 @@ import Header from "../../components/header";
 import LocaleSelect from "../../containers/locale-select";
 import ProfileInfo from "../../components/profile-info";
 import useTranslate from "../../hooks/use-translate";
+import useSession from "../../hooks/use-session";
 
 /**
  * Главная страница - первичная загрузка каталога
  */
 function ProfilePage() {
+  const { user } = useSession();
   const { t } = useTranslate();
 
   return (
     <PageLayout>
-      <Header />
+      <Header
+        loginLabel={t('header.login')}
+        logoutLabel={t('header.logout')}
+        user={user}
+      />
       <Head title={t('title')}>
         <LocaleSelect />
       </Head>

@@ -11,27 +11,26 @@ import SideLayout from '../../components/side-layout';
  */
 function CatalogFilter() {
   const store = useStore();
-  const [categories, setCategories] = useState([]);
+  // const [categories, setCategories] = useState([]);
 
   const select = useSelector(state => ({
     sort: state.catalog.params.sort,
     query: state.catalog.params.query,
     category: state.catalog.params.category,
+    categories: state.categories.data,
   }));
 
   useEffect(() => {
-    const fetchCategories = async () => {
-      const response = await fetch('/api/v1/categories?fields=_id,title,parent(_id)&limit=*');
-      const json = await response.json();
-      setCategories(json.result.items);
-    };
-    fetchCategories();
-  }, []);
+    // Запускаем загрузку категорий через модуль состояния
+    store.actions.categories.fetchCategories();
+  }, [store]);
 
   // Формирование вложенных категорий с дефисом для отображения иерархии
-  const formatCategory = (category, level = 0) => `${'-'.repeat(level)} ${category.title}`;
+  const formatCategory = (category, level = 0) => `${'- '.repeat(level)} ${category.title}`;
 
   const buildCategoryOptions = (categories, parent = null, level = 0) => {
+    if (!categories) return [];
+
     return categories
       .filter(cat => (cat.parent ? cat.parent._id === parent : !parent))
       .flatMap(cat => [
@@ -48,7 +47,7 @@ function CatalogFilter() {
     // Сброс
     onReset: useCallback(() => store.actions.catalog.resetParams(), [store]),
     // Обработка выбора категории
-    onCategoryChange: useCallback(category => store.actions.catalog.setParams({ category, page: 1 }), [store]),
+    onCategoryChange: useCallback(category => store.actions.catalog.setParams({category, page: 1}), [store]),
   };
 
   const options = useMemo(() => ({
@@ -60,9 +59,9 @@ function CatalogFilter() {
     ],
     categories: [
       { value: 'all', title: 'Все' }, // Опция для сброса категории
-      ...buildCategoryOptions(categories),
+      ...buildCategoryOptions(select.categories),
     ],
-  }), [categories]);
+  }), [select.categories]);
 
   const { t } = useTranslate();
 

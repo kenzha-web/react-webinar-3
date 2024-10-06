@@ -10,34 +10,37 @@ class ProfileState extends StoreModule {
     };
   }
 
-  async login(credentials) {
+  async login(credentials, navigate) {
     this.setState({
       data: {},
       waiting: true,
     });
 
     try {
-      const response = await fetch(
-        `/api/v1/users/sign`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            login: credentials.login,
-            password: credentials.password,
-          }),
-        }
-      );
-      const json = await response.json();
-      localStorage.setItem('token', json.result.token);
-      this.setState(
-        {
-          data: json.result,
-          access: true,
-          waiting: false,
+      const response = await fetch(`/api/v1/users/sign`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+        body: JSON.stringify({
+          login: credentials.login,
+          password: credentials.password,
+        }),
+      });
+      const json = await response.json();
+
+      if (!response.ok) {
+        const errorMessage = json.error?.data?.issues?.[0]?.message;
+        throw new Error(errorMessage);
+      }
+
+      localStorage.setItem('token', json.result.token);
+      localStorage.setItem('user', JSON.stringify(json.result));
+      this.setState({
+        data: json.result,
+        access: true,
+        waiting: false,
+      });
 
       return this.getState();
     } catch (e) {
@@ -46,6 +49,8 @@ class ProfileState extends StoreModule {
         access: false,
         waiting: false,
       });
+
+      return { success: false, issues: e.message };
     }
   }
 
@@ -92,9 +97,54 @@ class ProfileState extends StoreModule {
       });
     }
   }
-  logout() {
-    localStorage.removeItem('token');
-    this.setState({ data: {}, token: null });
+
+  async logout() {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      return { success: false, issues: 'Токен отсутствует' };
+    }
+
+    this.setState({
+      waiting: true,
+    });
+
+    try {
+      const response = await fetch(`/api/v1/users/sign`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Token": token,
+        },
+      });
+
+      if (!response.ok) {
+        const errorMessage = (await response.json()).error?.message || 'Ошибка выхода';
+        throw new Error(errorMessage);
+      }
+
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      this.setState({
+        data: {},
+        access: false,
+        token: null,
+        waiting: false,
+      });
+
+      return { success: true };
+    } catch (e) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      this.setState({
+        data: {},
+        access: false,
+        token: null,
+        waiting: false,
+      });
+
+      return { success: false, issues: e.message };
+    }
   }
 }
 
