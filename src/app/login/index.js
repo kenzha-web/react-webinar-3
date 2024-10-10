@@ -10,7 +10,7 @@ import SideLayout from '../../components/side-layout';
 import TopHead from '../../containers/top-head';
 import { useLocation, useNavigate } from 'react-router-dom';
 import useStore from '../../hooks/use-store';
-import useSelector from '../../hooks/use-selector';
+import useCustomSelector from '../../hooks/use-custom-selector';
 import useInit from '../../hooks/use-init';
 
 function Login() {
@@ -23,7 +23,7 @@ function Login() {
     store.actions.session.resetErrors();
   });
 
-  const select = useSelector(state => ({
+  const select = useCustomSelector(state => ({
     waiting: state.session.waiting,
     errors: state.session.errors,
   }));

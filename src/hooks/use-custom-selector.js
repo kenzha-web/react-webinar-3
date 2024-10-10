@@ -7,7 +7,7 @@ import useStore from './use-store';
  * @param selectorFunc {Function}
  * @return {*}
  */
-export default function useSelector(selectorFunc) {
+export default function useCustomSelector(selectorFunc) {
   const store = useStore();
 
   const [state, setState] = useState(() => selectorFunc(store.getState()));

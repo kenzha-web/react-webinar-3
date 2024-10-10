@@ -1,10 +1,10 @@
 import { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import useSelector from '../../hooks/use-selector';
+import useCustomSelector from '../../hooks/use-custom-selector';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 function Protected({ children, redirect }) {
-  const select = useSelector(state => ({
+  const select = useCustomSelector(state => ({
     exists: state.session.exists,
     waiting: state.session.waiting,
   }));

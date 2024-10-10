@@ -2,7 +2,7 @@ import { memo, useCallback } from 'react';
 import SideLayout from '../../components/side-layout';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import useTranslate from '../../hooks/use-translate';
-import useSelector from '../../hooks/use-selector';
+import useCustomSelector from '../../hooks/use-custom-selector';
 import useStore from '../../hooks/use-store';
 
 function TopHead() {
@@ -11,7 +11,7 @@ function TopHead() {
   const location = useLocation();
   const store = useStore();
 
-  const select = useSelector(state => ({
+  const select = useCustomSelector(state => ({
     user: state.session.user,
     exists: state.session.exists,
   }));

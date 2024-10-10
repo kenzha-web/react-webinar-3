@@ -1,6 +1,6 @@
 import { memo, useCallback, useMemo } from 'react';
 import useStore from '../../hooks/use-store';
-import useSelector from '../../hooks/use-selector';
+import useCustomSelector from '../../hooks/use-custom-selector';
 import useTranslate from '../../hooks/use-translate';
 import Menu from '../../components/menu';
 import BasketTool from '../../components/basket-tool';
@@ -12,7 +12,7 @@ function Navigation() {
   const store = useStore();
   const dispatch = useDispatch();
 
-  const select = useSelector(state => ({
+  const select = useCustomSelector(state => ({
     amount: state.basket.amount,
     sum: state.basket.sum,
   }));

@@ -15,7 +15,6 @@ X-Token: 7ee15209d8429544dea8123fbdae254f5f79e6da5d720fec3127d9385b6eb9bc
   "parent": {"_id":  "670260bb7dd498df5525e5ed", "_type":  "article"}
 }
 
-
 ###
 # Создание ответа на коммент коммента
 POST http://query.rest/api/v1/comments

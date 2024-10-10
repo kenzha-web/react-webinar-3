@@ -1,6 +1,6 @@
 import { memo, useCallback } from 'react';
 import useStore from '../../hooks/use-store';
-import useSelector from '../../hooks/use-selector';
+import useCustomSelector from '../../hooks/use-custom-selector';
 import useTranslate from '../../hooks/use-translate';
 import Item from '../../components/item';
 import List from '../../components/list';
@@ -10,7 +10,7 @@ import Spinner from '../../components/spinner';
 function CatalogList() {
   const store = useStore();
 
-  const select = useSelector(state => ({
+  const select = useCustomSelector(state => ({
     list: state.catalog.list,
     page: state.catalog.params.page,
     limit: state.catalog.params.limit,

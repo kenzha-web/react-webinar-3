@@ -1,7 +1,7 @@
 import { memo, useCallback, useMemo } from 'react';
 import useTranslate from '../../hooks/use-translate';
 import useStore from '../../hooks/use-store';
-import useSelector from '../../hooks/use-selector';
+import useCustomSelector from '../../hooks/use-custom-selector';
 import Select from '../../components/select';
 import Input from '../../components/input';
 import SideLayout from '../../components/side-layout';
@@ -11,7 +11,7 @@ import listToTree from '../../utils/list-to-tree';
 function CatalogFilter() {
   const store = useStore();
 
-  const select = useSelector(state => ({
+  const select = useCustomSelector(state => ({
     sort: state.catalog.params.sort,
     query: state.catalog.params.query,
     category: state.catalog.params.category,

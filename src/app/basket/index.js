@@ -1,7 +1,7 @@
 import { memo, useCallback } from 'react';
 import { useDispatch, useStore as useStoreRedux } from 'react-redux';
 import useStore from '../../hooks/use-store';
-import useSelector from '../../hooks/use-selector';
+import useCustomSelector from '../../hooks/use-custom-selector';
 import useInit from '../../hooks/use-init';
 import useTranslate from '../../hooks/use-translate';
 import ItemBasket from '../../components/item-basket';
@@ -14,7 +14,7 @@ function Basket() {
   const store = useStore();
   const dispatch = useDispatch();
 
-  const select = useSelector(state => ({
+  const select = useCustomSelector(state => ({
     list: state.basket.list,
     amount: state.basket.amount,
     sum: state.basket.sum,

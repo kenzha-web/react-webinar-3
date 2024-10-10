@@ -1,0 +1,81 @@
+.CommentsItem {
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  color: #000000;
+  margin-top: 30px;
+}
+
+.CommentsItem-header {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.CommentsItem-name {
+  font-weight: 700;
+}
+
+.CommentsItem-date {
+  color: #666666;
+}
+
+.CommentsItem-text {
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.CommentsItem-reply-form {
+  display: flex;
+  flex-direction: column;
+  margin-top: 30px;
+}
+
+.CommentsItem-reply-form label {
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 14px;
+  margin-bottom: 10px;
+}
+
+.CommentsItem-reply-form textarea {
+  border: 1px solid #666666;
+  margin-bottom: 10px;
+}
+
+.CommentsItem-btn-send {
+  margin-right: 10px;
+}
+
+.CommentsItem-btn-cancel {
+  font-size: 16px;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: grey;
+  background-color: white;
+  margin-left: 5px;
+  text-decoration: underline grey;
+}
+
+.CommentsItem-btn {
+  border: none;
+  padding: 0;
+  color: #0087E9;
+  background-color: white;
+  cursor: pointer;
+}
+
+.CommentsItem-replies {
+  padding-left: 30px;
+}
+
+.CommentsItem-enter {
+  font-size: 16px;
+  margin-top: 30px;
+}
+
+.CommentsItem-link {
+  color: #0087E9;
+}
+

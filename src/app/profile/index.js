@@ -1,7 +1,7 @@
 import { memo, useCallback, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import useStore from '../../hooks/use-store';
-import useSelector from '../../hooks/use-selector';
+import useCustomSelector from '../../hooks/use-custom-selector';
 import useTranslate from '../../hooks/use-translate';
 import useInit from '../../hooks/use-init';
 import PageLayout from '../../components/page-layout';
@@ -20,7 +20,7 @@ function Profile() {
     store.actions.profile.load();
   }, []);
 
-  const select = useSelector(state => ({
+  const select = useCustomSelector(state => ({
     profile: state.profile.data,
     waiting: state.profile.waiting,
   }));
