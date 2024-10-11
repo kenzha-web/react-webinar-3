@@ -1,3 +1,15 @@
+import {
+  ARTICLE_ADD_COMMENT_ADD_SUCCESS,
+  ARTICLE_ADD_COMMENT_LOAD_ERROR,
+  ARTICLE_ADD_COMMENT_LOAD_START,
+  ARTICLE_COMMENTS_LOAD_ERROR,
+  ARTICLE_COMMENTS_LOAD_START,
+  ARTICLE_COMMENTS_LOAD_SUCCESS,
+  ARTICLE_LOAD_ERROR,
+  ARTICLE_LOAD_START,
+  ARTICLE_LOAD_SUCCESS
+} from "../../utils/constants";
+
 // Начальное состояние
 export const initialState = {
   data: {},
@@ -9,25 +21,37 @@ export const initialState = {
 // Обработчик действий
 function reducer(state = initialState, action) {
 
+  console.log({action})
+
   switch (action.type) {
-    case 'article/load-start':
+    case ARTICLE_LOAD_START:
       return { ...state, data: {}, waiting: true };
 
-    case 'article/load-success':
+    case ARTICLE_LOAD_SUCCESS:
       return { ...state, data: action.payload.data, waiting: false };
 
-    case 'article/load-error':
+    case ARTICLE_LOAD_ERROR:
       return { ...state, data: {}, waiting: false }; //@todo текст ошибки сохранять?
 
-    case 'article-comments/load-start':
+    case ARTICLE_COMMENTS_LOAD_START:
       return { ...state, comments: [], waiting: true };
 
-    case 'article-comments/load-success':
+    case ARTICLE_COMMENTS_LOAD_SUCCESS:
       const commentsIerarchy2 = action.payload.data.reduce((acc, comment) => {
-        acc[comment._id] ??= {children: [], ...comment};
+        acc[comment._id] ??= {children: [], childrenCount: 0, ...comment};
 
         if (comment.parent._id in acc) {
-          acc[comment.parent._id].children.push(acc[comment._id]);
+          let parent = acc[comment.parent._id];
+          parent.children.push(acc[comment._id]);
+          parent.childrenCount++;
+
+          while (parent.parent._id && parent.parent._id !== state.data._id) {
+            parent = acc[parent.parent._id];
+            if (!parent) {
+              break;
+            }
+            parent.childrenCount++;
+          }
         }
 
         return acc;
@@ -35,31 +59,40 @@ function reducer(state = initialState, action) {
 
       return { ...state, commentsMap: commentsIerarchy2, comments: action.payload.data.filter(c => c.parent._id === state.data._id), waiting: false };
 
-    case 'article-comments/load-error':
+    case ARTICLE_COMMENTS_LOAD_ERROR:
       return { ...state, comments: [], waiting: false }; //@todo текст ошибки сохранять?
 
-    case 'article-add-comments/load-start':
-      return { ...state, comments: [], waiting: true };
+    case ARTICLE_ADD_COMMENT_LOAD_START:
+      return { ...state, waiting: true };
 
-    case 'article-add-comment/add-success':
+    case ARTICLE_ADD_COMMENT_ADD_SUCCESS:
       const parentId = action.payload.data.parent._id;
-      const parent = state.commentsMap[parentId]
+      let parent = state.commentsMap[parentId]
       state.commentsMap[action.payload.data._id] ??= {...action.payload.data, children: []};
       const item = state.commentsMap[action.payload.data._id];
 
       if (parent != null) {
-        state.commentsMap[parentId] = {...parent, children: [...parent.children, item]}
+        parent.children.push(item);
+        parent.childrenCount++;
+
+        while (parent.parent._id && parent.parent._id !== state.data._id) {
+          parent = state.commentsMap[parent.parent._id];
+          if (!parent) {
+            break;
+          }
+          parent.childrenCount++;
+        }
       }
 
       console.log({parentId, parent, item})
       return {
         ...state,
         commentsMap: {...state.commentsMap},
-        comments: action.payload.data.parent._id === state.data._id ? [...state.comments, item] : state.comments,
+        comments: action.payload.data.parent._id === state.data._id ? [...state.comments, item] : [...state.comments],
         waiting: false
       }
 
-    case 'article-add-comments/load-error':
+    case ARTICLE_ADD_COMMENT_LOAD_ERROR:
       return { ...state, comments: [], waiting: false }; //@todo текст ошибки сохранять?
 
     default:

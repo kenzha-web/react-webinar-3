@@ -14,7 +14,8 @@ function Comments({productId, comments, onAddComment = () => {}, exists}) {
   // console.log(comments)
   // console.log(exists)
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
     const text = commentRef.current.value;
     if (text.trim()) {
       onAddComment({ text, parentId: productId, type: 'article' });
@@ -37,7 +38,7 @@ function Comments({productId, comments, onAddComment = () => {}, exists}) {
       <div className={cn('title')}>Комментарии ({comments.length})</div>
       {comments.map(comment =>
         <CommentItem
-          key={comment._id}
+          key={comment._id + `--${comment.childrenCount}`}
           comment={comment}
           onAddComment={onAddComment}
           exists={exists}
@@ -48,7 +49,7 @@ function Comments({productId, comments, onAddComment = () => {}, exists}) {
         />
       )}
       {exists && !isReplying && (
-        <form className={cn('field')}>
+        <form onSubmit={handleSubmit} className={cn('field')}>
           <label htmlFor="comment">Новый комментарий</label>
           <textarea
             ref={commentRef}
@@ -58,7 +59,7 @@ function Comments({productId, comments, onAddComment = () => {}, exists}) {
             rows="10"
             placeholder="Текст"
           ></textarea>
-          <button onClick={handleSubmit}>Отправить</button>
+          <button type="submit">Отправить</button>
         </form>
       )}
       {!exists && (

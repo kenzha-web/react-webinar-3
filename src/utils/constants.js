@@ -1,0 +1,9 @@
+export const ARTICLE_LOAD_START = 'article/load-start';
+export const ARTICLE_LOAD_SUCCESS = 'article/load-success';
+export const ARTICLE_LOAD_ERROR = 'article/load-error';
+export const ARTICLE_COMMENTS_LOAD_START = 'article-comments/load-start';
+export const ARTICLE_COMMENTS_LOAD_SUCCESS = 'article-comments/load-success';
+export const ARTICLE_COMMENTS_LOAD_ERROR = 'article-comments/load-error';
+export const ARTICLE_ADD_COMMENT_LOAD_START = 'article-add-comments/load-start';
+export const ARTICLE_ADD_COMMENT_ADD_SUCCESS = 'article-add-comments/add-success';
+export const ARTICLE_ADD_COMMENT_LOAD_ERROR = 'article-add-comments/load-error';
