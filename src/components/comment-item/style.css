@@ -17,6 +17,10 @@
   font-weight: 700;
 }
 
+.CommentsItem-name_self {
+  color: grey;
+}
+
 .CommentsItem-date {
   color: #666666;
 }

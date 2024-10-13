@@ -5,9 +5,10 @@ import CommentForm from '../comment-form';
 
 const cn = bem('CommentsItem');
 
-function CommentItem({comment, activeCommentId, exists, onReplyClick, onCancelReply, onAddComment,}) {
+function CommentItem({comment, activeCommentId, exists, onReplyClick, onCancelReply, onAddComment, userId}) {
   const MAX_LEVEL = 5;
   const PAD_SIZE = 30;
+  const self = userId === comment.author._id;
 
   const isReplying = activeCommentId === comment._id;
   const marginLeft = Math.min(comment.level, MAX_LEVEL) * PAD_SIZE;
@@ -27,7 +28,7 @@ function CommentItem({comment, activeCommentId, exists, onReplyClick, onCancelRe
     <>
       <li className={cn()} style={{ marginLeft: `${marginLeft}px` }}>
         <div className={cn('header')}>
-          <div className={cn('name')}>{comment.author.profile.name}</div>
+          <div className={cn('name', { self })}>{comment.author.profile.name}</div>
           <div className={cn('date')}>{`${formattedDate} в ${formattedTime}`}</div>
         </div>
         <div className={cn('text')}>{comment.text}</div>
@@ -41,6 +42,7 @@ function CommentItem({comment, activeCommentId, exists, onReplyClick, onCancelRe
             onAddComment={onAddComment}
             onCancelReply={onCancelReply}
             parentId={comment._id}
+            parentName={comment.author.profile.name}
           />
         )}
       </li>

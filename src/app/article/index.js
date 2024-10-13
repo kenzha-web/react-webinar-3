@@ -39,6 +39,7 @@ function Article() {
   }));
 
   const customSelect = useCustomSelector(state => ({
+    userId: state.session.user._id,
     exists: state.session.exists,
   }));
 
@@ -77,6 +78,7 @@ function Article() {
       </Spinner>
       <Spinner active={selectComments.commentsWaiting}>
         <Comments
+          userId={customSelect.userId}
           productId={selectArticle.article._id}
           comments={commentsList}
           onAddComment={callbacks.addComment}

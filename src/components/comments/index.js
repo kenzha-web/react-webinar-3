@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 const cn = bem('Comments');
 
-function Comments({ productId, comments, onAddComment = () => {}, exists }) {
+function Comments({ productId, comments, onAddComment = () => {}, exists, userId }) {
   const commentRef = useRef();
   const [activeCommentId, setActiveCommentId] = useState('');
   const [newCommentId, setNewCommentId] = useState('');
@@ -43,6 +43,7 @@ function Comments({ productId, comments, onAddComment = () => {}, exists }) {
             onReplyClick={handleReplyClick}
             onCancelReply={handleCancelReply}
             onAddComment={onAddComment}
+            userId={userId}
           />
         )}
       </ul>
@@ -55,14 +56,19 @@ function Comments({ productId, comments, onAddComment = () => {}, exists }) {
             id="comment"
             cols="30"
             rows="10"
-            placeholder="Текст"
           ></textarea>
           <button type="submit">Отправить</button>
         </form>
       )}
       {!exists && (
         <div className={cn('enter')}>
-          <Link to="/login" className={cn('link')}>Войдите</Link>, чтобы иметь возможность комментировать.
+          <Link
+            to="/login"
+            state={{ back: location.pathname }}
+            className={cn('link')}
+          >
+            Войдите
+          </Link>, чтобы иметь возможность комментировать.
         </div>
       )}
     </div>
