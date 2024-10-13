@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo } from 'react';
+import {memo, useCallback, useEffect, useMemo} from 'react';
 import { useParams } from 'react-router-dom';
 import useStore from '../../hooks/use-store';
 import useTranslate from '../../hooks/use-translate';
@@ -11,32 +11,32 @@ import ArticleCard from '../../components/article-card';
 import LocaleSelect from '../../containers/locale-select';
 import TopHead from '../../containers/top-head';
 import { useDispatch, useSelector } from 'react-redux';
-import shallowequal from 'shallowequal';
 import articleActions from '../../store-redux/article/actions';
+import commentsActions from '../../store-redux/comments/actions';
 import Comments from "../../components/comments";
 import useCustomSelector from '../../hooks/use-custom-selector';
+import listToTree from "../../utils/list-to-tree";
+import treeToList from "../../utils/tree-to-list";
 
 function Article() {
   const store = useStore();
-
   const dispatch = useDispatch();
   const params = useParams();
 
   useInit(() => {
-    //store.actions.article.load(params.id);
     dispatch(articleActions.load(params.id));
-    dispatch(articleActions.commentsLoad(params.id));
+    dispatch(commentsActions.load(params.id));
   }, [params.id]);
 
-  const select = useSelector(
-    state => ({
-      article: state.article.data,
-      comments: state.article.comments,
-      commentsMap: state.article.commentsMap,
-      waiting: state.article.waiting,
-    }),
-    shallowequal,
-  ); // Нужно указать функцию для сравнения свойства объекта, так как хуком вернули объект
+  const selectArticle = useSelector(state => ({
+    article: state.article.data,
+    waiting: state.article.waiting,
+  }));
+
+  const selectComments = useSelector(state => ({
+    comments: state.comments.comments,
+    commentsWaiting: state.comments.waiting,
+  }));
 
   const customSelect = useCustomSelector(state => ({
     exists: state.session.exists,
@@ -44,42 +44,48 @@ function Article() {
 
   const { t } = useTranslate();
 
-  const commentsMapped = useMemo(() => {
-    console.log(select.comments, select.commentsMap)
-    return select.comments.map((c) => select.commentsMap[c._id])
-  }, [select.comments, select.commentsMap])
+  const commentsList = useMemo(() => {
+    const commentsTree = listToTree(selectComments.comments, params.id, '_id');
+    const list = treeToList(commentsTree, (item, level) => ({
+      ...item,
+      level,
+    }));
+    return list;
+  }, [selectComments.comments, params.id]);
 
   const callbacks = {
-    // Добавление в корзину
     addToBasket: useCallback(_id => store.actions.basket.addToBasket(_id), [store]),
 
-    addComment:  useCallback(({parentId, text, type}) => {
-      dispatch(articleActions.addComment({ parentId: parentId || params.id, text, type }));
+    addComment: useCallback(({ parentId, text, type }) => {
+      dispatch(commentsActions.addComment({ parentId: parentId || params.id, text, type }));
     }, [dispatch, params.id])
   };
 
   return (
     <PageLayout>
       <TopHead />
-      <Head title={select.article.title}>
+      <Head title={selectArticle.article.title}>
         <LocaleSelect />
       </Head>
       <Navigation />
-      <Spinner active={select.waiting}>
+      <Spinner active={selectArticle.waiting}>
         <ArticleCard
-          article={select.article}
+          article={selectArticle.article}
           onAdd={callbacks.addToBasket}
           t={t}
         />
       </Spinner>
-      <Comments
-        productId={select.article._id}
-        comments={commentsMapped}
-        onAddComment={callbacks.addComment}
-        exists={customSelect.exists}
-      />
+      <Spinner active={selectComments.commentsWaiting}>
+        <Comments
+          productId={selectArticle.article._id}
+          comments={commentsList}
+          onAddComment={callbacks.addComment}
+          exists={customSelect.exists}
+        />
+      </Spinner>
     </PageLayout>
   );
 }
 
 export default memo(Article);
+

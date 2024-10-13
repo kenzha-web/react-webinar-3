@@ -1,0 +1,49 @@
+.CommentForm-reply-form {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+}
+
+.CommentForm-reply-form label {
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 14px;
+  margin-bottom: 10px;
+}
+
+.CommentForm-reply-form textarea {
+  border: 1px solid #666666;
+  margin-bottom: 10px;
+}
+
+.CommentForm-reply-form-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.CommentForm-btn-send {
+  margin-right: 10px;
+}
+
+.CommentForm-btn-cancel {
+  font-size: 16px;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: grey;
+  background-color: white;
+  text-decoration: underline grey;
+}
+
+.CommentForm-enter {
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+.CommentForm-link {
+  color: #0087E9;
+}
+
+.CommentForm-btn-cancel {
+  margin-left: 10px;
+}

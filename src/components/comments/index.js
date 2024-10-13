@@ -1,18 +1,15 @@
-import {memo, useRef, useState} from 'react';
-import PropTypes from 'prop-types';
+import { memo, useRef, useState } from 'react';
 import { cn as bem } from '@bem-react/classname';
 import './style.css';
 import CommentItem from "../comment-item";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const cn = bem('Comments');
 
-function Comments({productId, comments, onAddComment = () => {}, exists}) {
+function Comments({ productId, comments, onAddComment = () => {}, exists }) {
   const commentRef = useRef();
-  const [activeCommentId, setActiveCommentId] = useState(null);
-  const [isReplying, setIsReplying] = useState(false);
-  // console.log(comments)
-  // console.log(exists)
+  const [activeCommentId, setActiveCommentId] = useState('');
+  const [newCommentId, setNewCommentId] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -20,35 +17,36 @@ function Comments({productId, comments, onAddComment = () => {}, exists}) {
     if (text.trim()) {
       onAddComment({ text, parentId: productId, type: 'article' });
       commentRef.current.value = '';
+    } else {
+      alert('Комментарий не может быть пустым.');
     }
   };
 
   const handleReplyClick = (commentId) => {
     setActiveCommentId(commentId);
-    setIsReplying(true);
   };
 
   const handleCancelReply = () => {
-    setActiveCommentId(null);
-    setIsReplying(false);
+    setActiveCommentId('');
   };
 
   return (
     <div className={cn()}>
       <div className={cn('title')}>Комментарии ({comments.length})</div>
-      {comments.map(comment =>
-        <CommentItem
-          key={comment._id + `--${comment.childrenCount}`}
-          comment={comment}
-          onAddComment={onAddComment}
-          exists={exists}
-          activeCommentId={activeCommentId}
-          isReplying={isReplying}
-          handleReplyClick={handleReplyClick}
-          handleCancelReply={handleCancelReply}
-        />
-      )}
-      {exists && !isReplying && (
+      <ul className={cn('list')}>
+        {comments.map(comment =>
+          <CommentItem
+            key={comment._id}
+            comment={comment}
+            activeCommentId={activeCommentId}
+            exists={exists}
+            onReplyClick={handleReplyClick}
+            onCancelReply={handleCancelReply}
+            onAddComment={onAddComment}
+          />
+        )}
+      </ul>
+      {!activeCommentId && exists && (
         <form onSubmit={handleSubmit} className={cn('field')}>
           <label htmlFor="comment">Новый комментарий</label>
           <textarea
